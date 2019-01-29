@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace antiCSRFTest
+namespace AntiCSRFTest
 {
     public class Startup
     {
