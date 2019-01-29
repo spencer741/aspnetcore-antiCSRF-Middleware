@@ -9,10 +9,11 @@ namespace antiCSRFTest.Middleware
 {
     public static class antiCSRFMiddlewareHelper
     {
-        //One for get, one for post. function for creating new CSRF token.
         public static HttpContext antiCSRFMiddlewareHelper(HttpContext httpContext)
         {
-            //The most common way to protect against CSRF attacks is by using a token that is returned on a GET request for a form, and must be present for a POST request to complete. The token must be unique to the user (Cannot be shared), and can either be per “session” or per “request” based.
+            //The most common way to protect against CSRF attacks is by using a token that is returned on a GET request for a form,
+            //and must be present for a POST request to complete. The token must be unique to the user (Cannot be shared), and can 
+            //either be per “session” or per “request” based.
 
             string Method = httpContext.Request.Method;
 
