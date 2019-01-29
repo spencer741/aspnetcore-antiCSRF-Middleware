@@ -15,6 +15,7 @@ namespace AntiCSRFTest.Middleware
             //and must be present for a POST request to complete. The token must be unique to the user (Cannot be shared), and can 
             //either be per “session” or per “request” based.
 
+
             string Method = httpContext.Request.Method;
 
             bool isRequestingSecuredResource = httpContext.Request.Path.ToString().Contains("/Secured");
