@@ -12,7 +12,7 @@ namespace antiCSRFTest.Middleware
     {
         private readonly RequestDelegate _next;
 
-        public CSRFHandlerMiddleware(RequestDelegate next)
+        public antiCSRFMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -31,7 +31,7 @@ namespace antiCSRFTest.Middleware
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class antiCSRFMiddlewareExtensions
     {
-        public static IApplicationBuilder UseBasicAuthenticationMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseMiddleware(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<antiCSRFMiddleware>();
         }
