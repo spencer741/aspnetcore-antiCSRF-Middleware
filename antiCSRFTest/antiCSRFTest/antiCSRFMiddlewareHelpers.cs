@@ -7,7 +7,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace AntiCSRFTest.Middleware
 {
-    public static class AntiCSRFMiddlewareHandlers
+    public static class AntiCSRFMiddlewareHelpers
     {
         //This function:
         //  a. Checks whether cookie is validated based on the requester requesting a secured or public resource.
@@ -20,6 +20,7 @@ namespace AntiCSRFTest.Middleware
                 //OLTP_Query, check against only session cookies
                 //return flag on validation status.
             }
+         
             //OLTP_Query, check against pre-session and session cookie
             //return flad on validation status.
         }
@@ -30,7 +31,7 @@ namespace AntiCSRFTest.Middleware
         public static HttpContext CreateUpdateAppendCookie(HttpContext httpContext)
         {
             //Creates new token, Updates DB, appends to the response, and returns.
-            
+            //TODO: make sure proper flags are set for cookie mitigation.
             //Do I have to delete old one? is it automatically appended to httpContext response?
             string newCookie = GenerateAntiCSRFToken();
 
@@ -44,13 +45,14 @@ namespace AntiCSRFTest.Middleware
 
                 }
             );
+        
 
         }
 
         private static string GenerateAntiCSRFToken()
         {
             //Combination of a completely random number (128 bits + 28?)
-
+       
         }
     }
 }

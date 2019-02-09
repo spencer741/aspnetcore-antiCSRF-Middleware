@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 namespace AntiCSRFTest.Middleware
 {
 
-    //TODO: make sure proper flags are set for cookie mitigation.
-
     /* General:
      * 
      * All POST and GET requests get caught by this middleware...
@@ -120,7 +118,6 @@ namespace AntiCSRFTest.Middleware
         }
 
     }
-
 
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class AntiCSRFMiddlewareExtensions
