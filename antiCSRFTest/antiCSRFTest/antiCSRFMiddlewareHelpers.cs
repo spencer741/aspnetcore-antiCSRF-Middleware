@@ -15,21 +15,27 @@ namespace AntiCSRFTest.Middleware
         //  c. If requesting public, can be validated against pre-session or session values in db.
         public static bool isCookieValidated(string cookieVal, bool isRequestingSecuredResource)
         {
-            if (isRequestingSecuredResource)
+
+            if (isRequestingSecuredResource)  
             {
-                //OLTP_Query, check against only session cookies
+
+                /*Data Adapter Call, check against session cookies*/
                 //return flag on validation status.
             }
-         
-            //OLTP_Query, check against pre-session and session cookie
-            //return flad on validation status.
+
+            /*Data Adapter Call, check against pre-session, then session cookies if no result for pre-session*/
+            //return flag on validation status.
         }
-       
+
         //This function:
         //  a. Creates a new Anti_CSRF Token
         //  b. Updates DB with that new token
         public static HttpContext CreateUpdateAppendCookie(HttpContext httpContext)
         {
+            //https://stackoverflow.com/questions/12116511/how-to-delete-cookie-from-net
+            //Reference accepted answer and comments. Might as well just expire the cookie when it is expired and leave the key-value, because
+            //it will be replaced in mitigation anyways.
+            
             //Creates new token, Updates DB, appends to the response, and returns.
             //TODO: make sure proper flags are set for cookie mitigation.
             //Do I have to delete old one? is it automatically appended to httpContext response?
