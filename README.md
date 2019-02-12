@@ -1,4 +1,4 @@
-# aspnetcore antiCSRF Middleware Boilerplate
+# aspnetcore antiCSRF Middleware Boilerplate(ish)
  
 Start pulling!
 
