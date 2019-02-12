@@ -57,8 +57,7 @@ namespace AntiCSRFTest.Middleware
 
         private static string GenerateAntiCSRFToken()
         {
-            //Combination of a completely random number (128 bits + 28?)
-       
+            //OWASP Anti-CSRF Cheatsheet they say: "Alternative generation algorithms include the use of 256-bit BASE64 encoded hashes."
         }
     }
 }

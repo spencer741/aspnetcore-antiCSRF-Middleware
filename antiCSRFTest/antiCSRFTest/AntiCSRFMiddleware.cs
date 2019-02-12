@@ -110,9 +110,9 @@ namespace AntiCSRFTest.Middleware
                 {
                     //They are authentcated. Everything is good. set equal to validated like we did in post logic or return here.
                 }
-                else if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because they could be first time;
+                else if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because this could be a first time;
                 {
-                    //Generate token and stuff
+                    //Generate pre-session cookie, add to pre-session table in db, and upate the response with a cookie.
                     CreateUpdateAppendCookie
                 }
                     //GET Logic
