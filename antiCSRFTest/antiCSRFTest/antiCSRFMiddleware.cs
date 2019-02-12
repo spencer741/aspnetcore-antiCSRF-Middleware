@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System.Threading.Tasks;
-
+using AntiCSRFTest.Middleware;
 namespace AntiCSRFTest.Middleware
 {
 
@@ -79,7 +79,7 @@ namespace AntiCSRFTest.Middleware
                         if (/*anti_CSRF_Token == cookieVal*/)
                         {
                             //Validated
-                            isValidated = true; //executes next middleware
+                            isValidated = true;
                         } 
                     } 
                 }
@@ -104,16 +104,25 @@ namespace AntiCSRFTest.Middleware
                 
 
             }
-            else if (Method.Equals("GET") && containsCookie /*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
+            else if (Method.Equals("GET") && containsCookie)
             {
-                //GET Logic
+                if (/*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
+                {
+                    //They are authentcated. Everything is good. set equal to validated like we did in post logic or return here.
+                }
+                else if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because this could be a first time;
+                {
+                    //Generate pre-session cookie, add to pre-session table in db, and upate the response with a cookie.
+                    CreateUpdateAppendCookie
+                }
+                    //GET Logic
+                    //cookie is validated if in here.
+                    
             }
             else
             {
                 //Other methods? Just decline until supported by app?
             }
-
-            //return Task.CompletedTask; //NOPE! all return values handled within conditionals
 
         }
 
