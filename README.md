@@ -3,3 +3,6 @@
 Start pulling!
 
 Note: when DBIO is necessary in code, just place a comment /*Custom Data Adapter call*/ or create a filler var for now. 
+![alt text](
+        aspnetcore-antiCSRF-Middleware/antiCSRFControlDiagram.svg
+      )
