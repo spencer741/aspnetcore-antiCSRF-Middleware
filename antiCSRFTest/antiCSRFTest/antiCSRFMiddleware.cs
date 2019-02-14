@@ -104,9 +104,10 @@ namespace AntiCSRFTest.Middleware
                 
 
             }
-            else if (Method.Equals("GET") && containsCookie)
+            else if (Method.Equals("GET"))
             {
-                if (/*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
+
+                if (containsCookie/*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
                 {
                     //They are authentcated. Everything is good. set equal to validated like we did in post logic or return here.
                 }
@@ -123,6 +124,7 @@ namespace AntiCSRFTest.Middleware
             {
                 //Other methods? Just decline until supported by app?
             }
+
 
         }
 
