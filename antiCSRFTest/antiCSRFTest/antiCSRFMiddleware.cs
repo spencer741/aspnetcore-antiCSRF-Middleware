@@ -61,22 +61,24 @@ namespace AntiCSRFTest.Middleware
             string Method = httpContext.Request.Method;
             bool isRequestingSecuredResource = httpContext.Request.Path.ToString().Contains("/Secured");
             bool containsCookie = (httpContext.Request.Cookies["anti_CSRF"].ToString() != null);
+            string cookieVal = null;
+            bool isFormSubmit = httpContext.Request.HasFormContentType;
+
             if (containsCookie)
             {
                 //Get cookie val here.
-                string cookieVal = httpContext.Request.Cookies["anti_CSRF"];
+                cookieVal = httpContext.Request.Cookies["anti_CSRF"];
             }
-            bool isFormSubmit = httpContext.Request.HasFormContentType;
-
-            
+           
             bool isValidated = false; //To implement DRY when returning.
-            if (Method.Equals("POST") && containsCookie /*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
+
+            if (Method.Equals("POST") && containsCookie && AntiCSRFMiddlewareHelpers.isCookieValidated(cookieVal, isRequestingSecuredResource))  //***resource handling occurs in isCookieValidated Call here!!!***
             {
                 if (isFormSubmit) //double submit cookie pattern.
                 {
                     if (httpContext.Request.Form.TryGetValue("anti_CSRF", out StringValues anti_CSRF_Token))
                     {
-                        if (/*anti_CSRF_Token == cookieVal*/)
+                        if (anti_CSRF_Token == cookieVal)
                         {
                             //Validated
                             isValidated = true;
@@ -89,7 +91,7 @@ namespace AntiCSRFTest.Middleware
                     isValidated = true;
                 }
 
-                //validation check
+                //validation check ; this pattern was taken on for more readable code
                 if (isValidated)
                 {
                     return _next(httpContext);
@@ -100,32 +102,28 @@ namespace AntiCSRFTest.Middleware
                     httpContext.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 }
-
-                
-
             }
             else if (Method.Equals("GET"))
             {
-
-                if (containsCookie/*&& isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***) */ )
+                if (containsCookie && AntiCSRFMiddlewareHelpers.isCookieValidated(cookieVal, isRequestingSecuredResource)) //***resource handling occurs in isCookieValidated Call here!!!***
                 {
-                    //They are authentcated. Everything is good. set equal to validated like we did in post logic or return here.
+                    //They are authentcated. Return here.
+                    return _next(httpContext);
+                    
                 }
                 else if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because this could be a first time;
                 {
-                    //Generate pre-session cookie, add to pre-session table in db, and upate the response with a cookie.
-                    CreateUpdateAppendCookie
-                }
-                    //GET Logic
-                    //cookie is validated if in here.
-                    
+                    //Generate pre-session cookie, add to pre-session table in db, and update the response with a cookie.
+                    AntiCSRFMiddlewareHelpers.CreateUpdateAppendCookie(httpContext);
+                }     
             }
             else
             {
-                //Other methods? Just decline until supported by app?
+                //Other methods? Just decline until supported by app.
+                //Incorrect Response type... likely hack
+                httpContext.Response.StatusCode = 405; //Method not allowed.
+                return Task.CompletedTask;
             }
-
-
         }
 
     }
