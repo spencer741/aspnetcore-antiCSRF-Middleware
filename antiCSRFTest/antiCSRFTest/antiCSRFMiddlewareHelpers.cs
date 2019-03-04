@@ -9,6 +9,7 @@ namespace AntiCSRFTest.Middleware
 {
     public static class AntiCSRFMiddlewareHelpers
     {
+        //isCookieValidated(cookieval, isSecuredResource ***resource handling here!!!***)
         //This function:
         //  a. Checks whether cookie is validated based on the requester requesting a secured or public resource.
         //  b. If requesting secured, can only be validated against session values in db.
