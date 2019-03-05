@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System.Threading.Tasks;
-using AntiCSRFTest.Middleware;
 namespace AntiCSRFTest.Middleware
 {
 
@@ -45,6 +44,11 @@ namespace AntiCSRFTest.Middleware
      *  Every public request can be gotten using a pre-session or session cookie.
      *  Every secured request can only be gotten with a session cookie.
     */
+
+    /* After this middleware has executed, there is further cookie mitigation needed later on in the pipeline.
+     * After the user is authenticated, their anti_CSRF token needs to be upgraded from pre-session to session.
+     * If you don't want to upgrade, just create another one and put that in the session data relating to the user.
+     */
 
     public class AntiCSRFMiddleware
     {
@@ -107,14 +111,22 @@ namespace AntiCSRFTest.Middleware
             {
                 if (containsCookie && AntiCSRFMiddlewareHelpers.isCookieValidated(cookieVal, isRequestingSecuredResource)) //***resource handling occurs in isCookieValidated Call here!!!***
                 {
-                    //They are authentcated. Return here.
+                    //They are authenticated. Return here.
                     return _next(httpContext);
                     
                 }
-                else if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because this could be a first time;
+                else //if (!isRequestingSecuredResource) //Meaning it was not validated upon requesting a public resource, we generate a token because this could be a first time;
                 {
                     //Generate pre-session cookie, add to pre-session table in db, and update the response with a cookie.
-                    AntiCSRFMiddlewareHelpers.CreateUpdateAppendCookie(httpContext);
+                    HttpContext newContext = AntiCSRFMiddlewareHelpers.CreateUpdateAppendCookie(httpContext);
+                    if (newContext != null)
+                    {
+                        //Successful. They can now continue accessing public resource.
+                        httpContext = newContext;
+                        return _next(httpContext);
+                    }
+                    //Failed
+                    return Task.CompletedTask;
                 }     
             }
             else
@@ -125,7 +137,6 @@ namespace AntiCSRFTest.Middleware
                 return Task.CompletedTask;
             }
         }
-
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
