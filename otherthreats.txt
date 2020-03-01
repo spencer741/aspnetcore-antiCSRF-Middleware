@@ -1,3 +1,6 @@
+
+https://stackoverflow.com/questions/16049721/how-is-using-synchronizer-token-pattern-to-prevent-csrf-safe
+=====================================================Depreciated==========================
 Anyways, the bottom line is that I want my threat vectors to extend beyond trusting that the user will use Chrome or Mozilla that adhere to protocols like same-origin policy and updating proper referrer headers. In reality, anybody can create a http client that doesn’t enforce these rules, so this essentially can leave webpages open to CSRF attacks if the attacker does enough investigating on how the legitimate server mitigates requests (especially from the login page). I would like to get into the different login methods developers use for their frontend, but that is likely to long for this.
 
 I wrote up a short scenario below:
